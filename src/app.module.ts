@@ -6,6 +6,9 @@ import { typeOrmConfig } from './config/typeorm.config';
 import { TeachingModule } from './teaching/teaching.module';
 import { envs } from './config/envs';
 import { EventPublisherInterceptor, EVENT_EMITTER } from './common/events/event-publisher.interceptor';
+import { SeedingController } from './seeding.controller';
+import { CourseSection } from './teaching/course-sections/entities/course-section.entity';
+import { Schedule } from './teaching/schedules/entities/schedule.entity';
 
 @Module({
   imports: [
@@ -17,6 +20,7 @@ import { EventPublisherInterceptor, EVENT_EMITTER } from './common/events/event-
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => typeOrmConfig(configService),
     }),
+    TypeOrmModule.forFeature([CourseSection, Schedule]),
     ClientsModule.register([
       {
         name: EVENT_EMITTER,
@@ -28,7 +32,7 @@ import { EventPublisherInterceptor, EVENT_EMITTER } from './common/events/event-
     ]),
     TeachingModule,
   ],
-  controllers: [],
+  controllers: [SeedingController],
   providers: [EventPublisherInterceptor],
   exports: [EventPublisherInterceptor],
 })
